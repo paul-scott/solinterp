@@ -32,6 +32,7 @@ int test2()
 	assert(table.v[0][0] == 11.);
 	assert(table.v[5][3] == 64.);
 	assert(table.v[8][8] == 99.);
+	//table_print(&table);
 	table_free(&table);
 	return 0;
 }

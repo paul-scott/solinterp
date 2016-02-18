@@ -83,13 +83,6 @@ void table_init(Table *table, size_t nr, size_t nc)
 		table->v[i] = malloc(nc*sizeof(double));
 }
 
-void table_free(Table *table)
-{
-	for (size_t i=0; i<table->nr; i++)
-		free(table->v[i]);
-	free(table->v);
-}
-
 void table_init_csv(Table *table, const char *fn, const char *delim)
 {
 	// Any line that starts with a # or is blank is ignored
@@ -148,3 +141,23 @@ void table_init_csv(Table *table, const char *fn, const char *delim)
 
 	vectorv_free(&rows);
 }
+
+void table_print(const Table *table)
+{
+	for (size_t i=0; i<table->nr; i++) {
+		for (size_t j=0; j<table->nc; j++) {
+			printf("%.1f", table->v[i][j]);
+			if (j < table->nc-1)
+				printf(", ");
+		}
+		printf("\n");
+	}
+}
+
+void table_free(Table *table)
+{
+	for (size_t i=0; i<table->nr; i++)
+		free(table->v[i]);
+	free(table->v);
+}
+

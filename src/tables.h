@@ -3,7 +3,7 @@
 
 #include <stdlib.h>
 
-const size_t VECTOR_INIT_CAP = 10;
+#define VECTOR_INIT_CAP 10
 
 typedef struct {
 	size_t len; // current length
@@ -37,6 +37,7 @@ Vector *vectorv_get(const VectorV *vec, size_t i);
 
 void table_init(Table *table, size_t nr, size_t nc);
 void table_init_csv(Table *table, const char *fn, const char *delim);
+void table_print(const Table *table);
 void table_free(Table *table);
 
 #endif

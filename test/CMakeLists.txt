@@ -9,7 +9,15 @@ add_executable(test_tables
 	)
 
 target_link_libraries(test_tables
-	soli_tables
+	solinterp
+	)
+
+add_executable(test_symmetries
+	test_symmetries.c
+	)
+
+target_link_libraries(test_symmetries
+	solinterp
 	)
 
 add_subdirectory(resources)

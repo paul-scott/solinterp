@@ -130,7 +130,7 @@ void table_init_csv(Table *table, const char *fn, const char *delim)
 		table->nc = nc;
 		table->v = malloc(nr*sizeof(double *));
 		for (size_t i=0; i<nr; i++) {
-			table->v[i] = malloc(nc*sizeof(double));
+			table->v[i] = malloc(nc*sizeof(double));  // set to zero
 			for (size_t j=0; j<nc; j++)
 				table->v[i][j] = vector_get(vectorv_get(&rows, i), j);
 		}

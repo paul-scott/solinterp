@@ -24,11 +24,6 @@ void grid_transform(Table *table, size_t n, size_t m, const char *sym)
 
 	table_init(&tab, nr, nc);
 
-	// Valgrind throwing errors because not all table entries are being written
-	// to.  When table is printed out a conditional jump takes place on these
-	// unintialised values.  I assume that the algorithm below is not correct,
-	// otherwise we should set to zero all values before starting.
-
 	// Setting values for grid axes
 	tab.v[0][0] = 0.; // top left point not used
 	for (size_t i=1; i<nr; i++)
@@ -36,6 +31,14 @@ void grid_transform(Table *table, size_t n, size_t m, const char *sym)
 	for (size_t j=1; j<nc; j++)
 		tab.v[0][j] = -180.0 +(j-1)*ha_step;
 
+	// Some positions don't get written to below.  Initialising the table so
+	// that these values end up as zero.
+	for (size_t i=1; i<nr; i++)
+		for (size_t j=1; j<nc; j++)
+			tab.v[i][j] = 0.;
+
+	
+	
 	for (size_t r=0; r<table->nr; r++) {
 		double el = table->v[r][0];
 		double ha = table->v[r][1];

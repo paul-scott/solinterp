@@ -2,20 +2,24 @@
 #include <stdio.h>
 #include <math.h>
 
-/* Cubic Catmull-Rom spline
+/* Cubic Catmull-Rom spline interpolation.
  * p are values of 4 control points
- * st step between control points
+ * u is fractional position between middle two control points for point of interest
  */
 double catrom_spline(double p[4], double u)
 {
 	double q;
 	q = (-u*u*u + 2*u*u - u)*p[0];
-	q += (3*u*u*u - 5*u*u - 2)*p[1];
-	q += (-3*u*u*u - 4*u*u + u)*p[2];
+	q += (3*u*u*u - 5*u*u + 2)*p[1];
+	q += (-3*u*u*u + 4*u*u + u)*p[2];
 	q += (u*u*u - u*u)*p[3];
 	return q/2;
 }
 
+/* Bicubic Catmull-Rom spline interpolation.
+ * pnts are 16 control points surrounding point to interpolate
+ * u and v are fractional position between central 4 control points for point of interest
+ */
 double catrom_spline_2d(double pnts[4][4], double u, double v)
 {
 	double p[4];
@@ -23,6 +27,7 @@ double catrom_spline_2d(double pnts[4][4], double u, double v)
 	p[1] = catrom_spline(pnts[1], v);
 	p[2] = catrom_spline(pnts[2], v);
 	p[3] = catrom_spline(pnts[3], v);
+	//printf("%f, %f, %f, %f\n", p[0], p[1], p[2], p[3]);
 	return catrom_spline(p, u);
 }
 

@@ -5,11 +5,6 @@
 
 int test1()
 {
-	//printf("%d\n", 3 % 4);
-	//printf("%d\n", -3 % 4);
-	//printf("%d\n", 3 % -4);
-	//printf("%d\n", -3 % -4);
-
 	Table table;
 
 	table_init_csv(&table, "resources/sym_test_file1.csv", ",");
@@ -18,13 +13,9 @@ int test1()
 	size_t m = 24;
 	grid_transform(&table, n, m, "E");
 	double v = catrom_interp(&table, 0, 0, 360./n, 360./m);
-	printf("#%f\n", v);
-	v = catrom_interp(&table, 4, 0, 360./n, 360./m);
-	printf("#%f\n", v);
-	v = catrom_interp(&table, 32, 0, 360./n, 360./m);
-	printf("#%f\n", v);
+	assert(v == 3.);
 	v = catrom_interp(&table, 36, 0, 360./n, 360./m);
-	printf("#%f\n", v);
+	assert(v == 4.);
 
 	table_free(&table);
 	return 0;
@@ -35,7 +26,7 @@ int test2()
 	Table table;
 	Table table2;
 
-	table_init_csv(&table, "resources/sym_test_file1.csv", ",");
+	table_init_csv(&table, "resources/AliceSprings_N10M24_ext.csv", ",");
 
 	size_t n = 10;
 	size_t m = 24;
@@ -66,7 +57,7 @@ int test2()
 int main(int argc, char *argv[])
 {
 	int res = 0;
-	//res += test1();
+	res += test1();
 	res += test2();
 
 	printf("#test_interpolation: %d tests failed of %d\n", res, 2);

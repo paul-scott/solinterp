@@ -15,14 +15,19 @@
 void grid_transform(Table *table, size_t n, size_t m, const char *sym)
 {
 	Table tab; // working table for grided data
-	size_t nr = n + 2; // extra rows for hour angles and -180, 180 redundancy
-	size_t nc = m + 2; // extra cols for eclip longs and -180, 180 redundancy
+	size_t nr = n + 1; // extra rows for hour angles
+	size_t nc = m + 1; // extra cols for eclip longs
 	double el_step = 360./n; // ecliptic longitude grid step
 	double ha_step = 360./m; // hour angle grid step
 
 	int east_only = !strcmp(sym, "E");
 
 	table_init(&tab, nr, nc);
+
+	// Valgrind throwing errors because not all table entries are being written
+	// to.  When table is printed out a conditional jump takes place on these
+	// unintialised values.  I assume that the algorithm below is not correct,
+	// otherwise we should set to zero all values before starting.
 
 	// Setting values for grid axes
 	tab.v[0][0] = 0.; // top left point not used
@@ -37,7 +42,6 @@ void grid_transform(Table *table, size_t n, size_t m, const char *sym)
 		double val = table->v[r][2];
 		size_t i = (size_t) roundf((180. + el)/el_step) % n;
 		size_t j = (size_t) roundf((180. + ha)/ha_step) % m;
-		printf("%lu, %lu\n", i, j);
 
 		// direct
 		tab.v[i+1][j+1] = val; // direct
@@ -50,11 +54,10 @@ void grid_transform(Table *table, size_t n, size_t m, const char *sym)
 		size_t i_dn = (n - i) % n;
 		size_t j_dn = (3*m/2 - j) % m;
 		tab.v[i_dn+1][j_dn+1] = -val;
-
-		// spring-autumn and day-night
 		size_t i_sadn = (n - i_sa) % n;
 		tab.v[i_sadn+1][j_dn+1] = -val;
 
+		// east-west
 		if (east_only) {
 			size_t j_ew = (m - j) % m;
 			tab.v[i+1][j_ew+1] = val;
@@ -64,11 +67,6 @@ void grid_transform(Table *table, size_t n, size_t m, const char *sym)
 			tab.v[i_sadn+1][j_ewdn+1] = -val;
 		}
 	}
-	// Copying -180 to 180
-	for (size_t i=1; i<nr; i++)
-		tab.v[i][nc-1] = tab.v[i][1];
-	for (size_t j=1; j<nc; j++)
-		tab.v[nr-1][j] = tab.v[1][j];
 
 	table_free(table);
 	*table = tab;

@@ -1,4 +1,4 @@
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -std=c99")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -std=c99 -g")
 
 include_directories(
 	${CMAKE_SOURCE_DIR}/src
@@ -7,7 +7,6 @@ include_directories(
 add_executable(test_tables
 	test_tables.c
 	)
-
 target_link_libraries(test_tables
 	solinterp
 	)
@@ -15,9 +14,17 @@ target_link_libraries(test_tables
 add_executable(test_symmetries
 	test_symmetries.c
 	)
-
 target_link_libraries(test_symmetries
 	solinterp
 	)
+
+add_executable(test_interpolation
+	test_interpolation.c
+	)
+target_link_libraries(test_interpolation
+	solinterp
+	)
+
+file(COPY ./ DESTINATION . FILES_MATCHING PATTERN "*.py")
 
 add_subdirectory(resources)

@@ -23,6 +23,6 @@ int main(int argc, char *argv[])
 	int res = 0;
 	res += test1();
 
-	printf("test_symmetries: %d tests failed of %d\n", res, 1);
+	printf("#test_symmetries: %d tests failed of %d\n", res, 1);
 	return res;
 }

@@ -186,6 +186,8 @@ void table_print(const Table *table)
 
 void table_free(Table *table)
 {
+	if (!table)
+		return;
 	for (size_t i=0; i<table->nr; i++)
 		free(table->v[i]);
 	free(table->v);

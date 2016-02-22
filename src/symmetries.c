@@ -7,12 +7,11 @@
 
 /* Convert table into a grided form, taking into account symmetries
  *
- * table is a kx3 table of points in list form where k = table->nr
+ * table must have at least 3 columns
  * n number of points on circle for ecliptic longitude
  * m number of points on circle for hour angle
  */
-
-void grid_transform(Table *table, size_t n, size_t m, const char *sym)
+int grid_transform(Table *table, size_t n, size_t m, const char *sym)
 {
 	Table tab; // working table for grided data
 	size_t nr = n + 1; // extra rows for hour angles
@@ -22,7 +21,8 @@ void grid_transform(Table *table, size_t n, size_t m, const char *sym)
 
 	int east_only = !strcmp(sym, "E");
 
-	table_init(&tab, nr, nc);
+	if (table_init(&tab, nr, nc))
+		return -1;
 
 	// Setting values for grid axes
 	tab.v[0][0] = 0.; // top left point not used
@@ -36,8 +36,6 @@ void grid_transform(Table *table, size_t n, size_t m, const char *sym)
 	for (size_t i=1; i<nr; i++)
 		for (size_t j=1; j<nc; j++)
 			tab.v[i][j] = 0.;
-
-	
 	
 	for (size_t r=0; r<table->nr; r++) {
 		double el = table->v[r][0];
@@ -73,4 +71,5 @@ void grid_transform(Table *table, size_t n, size_t m, const char *sym)
 
 	table_free(table);
 	*table = tab;
+	return 0;
 }

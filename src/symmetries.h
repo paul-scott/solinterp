@@ -3,6 +3,6 @@
 
 #include "tables.h"
 
-void grid_transform(Table *table, size_t n, size_t m, const char *symm);
+int grid_transform(Table *table, size_t n, size_t m, const char *symm);
 
 #endif

@@ -1,4 +1,4 @@
-#Ecliptic longitude, deg,Hour angle, deg,function
+#ecliptic longitude (deg),hour angle (deg),efficency
 -72,-90,0.366644649
 -72,-75,0.527350265
 -72,-60,0.590318607

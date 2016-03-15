@@ -46,7 +46,61 @@ void test2()
 			table2.v[i+1][j+1] = catrom_interp(&table,
 					table2.v[i+1][0], table2.v[0][j+1], 360./n, 360./m);
 
-	table_print(&table2);
+	//table_print(&table2);
+
+	table_free(&table);
+	table_free(&table2);
+}
+
+void test3()
+{
+	Table table;
+	Table table2;
+
+	assert(!table_init_csv(&table, "resources/alice_springs_sample.csv", ","));
+	assert(!table_init_csv(&table2, "resources/alice_springs_interp.csv", ","));
+
+	const double FLOAT_THRESHOLD = 1e-8;
+
+	size_t n = 10;
+	size_t m = 24;
+	assert(!grid_transform(&table, n, m, "E"));
+
+	for (size_t i=0; i<table2.nr; i++) {
+		double x = table2.v[i][0];
+		double y = table2.v[i][1];
+		double p = table2.v[i][2];
+		double p_i = catrom_interp(&table, x, y, 360./n, 360./m);
+		//printf("%f %f %f %f\n", x, y, p, p_i);
+		assert(p_i <= p + FLOAT_THRESHOLD && p_i >= p - FLOAT_THRESHOLD);
+	}
+
+	table_free(&table);
+	table_free(&table2);
+}
+
+void test4()
+{
+	Table table;
+	Table table2;
+
+	assert(!table_init_csv(&table, "resources/newcastle_sample.csv", ","));
+	assert(!table_init_csv(&table2, "resources/newcastle_interp.csv", ","));
+
+	const double FLOAT_THRESHOLD = 1e-5;
+
+	size_t n = 10;
+	size_t m = 24;
+	assert(!grid_transform(&table, n, m, "EW"));
+
+	for (size_t i=0; i<table2.nr; i++) {
+		double x = table2.v[i][0];
+		double y = table2.v[i][1];
+		double p = table2.v[i][2];
+		double p_i = catrom_interp(&table, x, y, 360./n, 360./m);
+		//printf("%f %f %f %f\n", x, y, p, p_i);
+		assert(p_i <= p + FLOAT_THRESHOLD && p_i >= p - FLOAT_THRESHOLD);
+	}
 
 	table_free(&table);
 	table_free(&table2);
@@ -56,6 +110,8 @@ int main(int argc, char *argv[])
 {
 	test1();
 	test2();
+	test3();
+	test4();
 
 	return 0;
 }

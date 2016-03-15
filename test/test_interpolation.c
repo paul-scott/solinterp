@@ -60,7 +60,7 @@ void test3()
 	assert(!table_init_csv(&table, "resources/alice_springs_sample.csv", ","));
 	assert(!table_init_csv(&table2, "resources/alice_springs_interp.csv", ","));
 
-	const double FLOAT_THRESHOLD = 1e-8;
+	const double FLOAT_THRESHOLD = 1e-9;
 
 	size_t n = 10;
 	size_t m = 24;

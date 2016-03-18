@@ -24,6 +24,8 @@ void test2()
 {
 	Table table;
 	Table table2;
+	size_t i;
+	size_t j;
 
 	assert(!table_init_csv(&table, "resources/AliceSprings_N10M24_ext.csv", ","));
 
@@ -36,13 +38,13 @@ void test2()
 	assert(!table_init(&table2, nn + 1, mm + 1));
 
 	table2.v[0][0] = 0.;
-	for (size_t i=1; i<table2.nr; i++)
+	for (i=1; i<table2.nr; i++)
 		table2.v[i][0] = -180.0 + (i-1)*360./nn;
-	for (size_t j=1; j<table2.nc; j++)
+	for (j=1; j<table2.nc; j++)
 		table2.v[0][j] = -180.0 + (j-1)*360./mm;
 
-	for (size_t i=0; i<nn; i++)
-		for (size_t j=0; j<mm; j++)
+	for (i=0; i<nn; i++)
+		for (j=0; j<mm; j++)
 			table2.v[i+1][j+1] = catrom_interp(&table,
 					table2.v[i+1][0], table2.v[0][j+1], 360./n, 360./m);
 
@@ -83,6 +85,7 @@ void test4()
 {
 	Table table;
 	Table table2;
+	size_t i;
 
 	assert(!table_init_csv(&table, "resources/newcastle_sample.csv", ","));
 	assert(!table_init_csv(&table2, "resources/newcastle_interp.csv", ","));
@@ -93,7 +96,7 @@ void test4()
 	size_t m = 24;
 	assert(!grid_transform(&table, n, m, "EW"));
 
-	for (size_t i=0; i<table2.nr; i++) {
+	for (i=0; i<table2.nr; i++) {
 		double x = table2.v[i][0];
 		double y = table2.v[i][1];
 		double p = table2.v[i][2];

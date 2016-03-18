@@ -5,14 +5,16 @@
 void test1()
 {
 	Table table;
+	size_t i;
+	size_t j;
 	size_t nr = 3;
 	size_t nc = 4;
 
 	assert(!table_init(&table, nr, nc));
 	assert(table.nr == nr);
 	assert(table.nc == nc);
-	for (size_t i=0; i<nr; i++) {
-		for (size_t j=0; j<nc; j++) {
+	for (i=0; i<nr; i++) {
+		for (j=0; j<nc; j++) {
 			table.v[i][j] = 4;
 		}
 	}
